@@ -1,0 +1,276 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Séjour{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="header-section">
+                <h3 class="header">
+                    <i class="material-icons" style="font-size: 2.5rem;">hotel</i>
+                    Détails du Séjour
+                </h3>
+                <div class="header-actions">
+                    <a href="{{ path('app_sejour_edit', {'id': sejour.id}) }}" 
+                       class="btn waves-effect waves-light orange">
+                        <i class="material-icons left">edit</i>
+                        Modifier
+                    </a>
+                    <a href="{{ path('app_sejour_index') }}" 
+                       class="btn-flat waves-effect">
+                        <i class="material-icons left">arrow_back</i>
+                        Retour
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card animate-fade-up">
+                <div class="card-content">
+                    <div class="info-grid">
+                        <!-- Patient Information -->
+                        <div class="info-section">
+                            <div class="section-header">
+                                <i class="material-icons">person</i>
+                                <h5>Information du Patient</h5>
+                            </div>
+                            <div class="section-content">
+                                <p>
+                                    <strong>Nom complet:</strong>
+                                    {{ sejour.dossierMedicale.patient.nomUser }} {{ sejour.dossierMedicale.patient.prenomUser }}
+                                </p>
+                                <p>
+                                    <strong>Email:</strong>
+                                    {{ sejour.dossierMedicale.patient.email }}
+                                </p>
+                                <p>
+                                    <strong>Téléphone:</strong>
+                                    {{ sejour.dossierMedicale.patient.numTelephone }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Doctor Information -->
+                        <div class="info-section">
+                            <div class="section-header">
+                                <i class="material-icons">medical_services</i>
+                                <h5>Médecin Traitant</h5>
+                            </div>
+                            <div class="section-content">
+                                <p>
+                                    <strong>Nom complet:</strong>
+                                    Dr. {{ sejour.dossierMedicale.medecin.nomUser }} {{ sejour.dossierMedicale.medecin.prenomUser }}
+                                </p>
+                                <p>
+                                    <strong>Email:</strong>
+                                    {{ sejour.dossierMedicale.medecin.email }}
+                                </p>
+                                <p>
+                                    <strong>Téléphone:</strong>
+                                    {{ sejour.dossierMedicale.medecin.numTelephone }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Stay Information -->
+                        <div class="info-section">
+                            <div class="section-header">
+                                <i class="material-icons">event</i>
+                                <h5>Informations du Séjour</h5>
+                            </div>
+                            <div class="section-content">
+                                <p>
+                                    <strong>Type de séjour:</strong>
+                                    <span class="chip {{ sejour.typeSejour == 'Hospitalisation' ? 'orange white-text' : 'blue white-text' }}">
+                                        <i class="material-icons">
+                                            {% if sejour.typeSejour == 'Hospitalisation' %}local_hotel
+                                            {% else %}medical_services{% endif %}
+                                        </i>
+                                        {{ sejour.typeSejour }}
+                                    </span>
+                                </p>
+                                <p>
+                                    <strong>Date d'entrée:</strong>
+                                    {{ sejour.dateEntree ? sejour.dateEntree|date('d/m/Y H:i') : '' }}
+                                </p>
+                                <p>
+                                    <strong>Date de sortie:</strong>
+                                    {{ sejour.dateSortie ? sejour.dateSortie|date('d/m/Y H:i') : '' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Payment Information -->
+                        <div class="info-section">
+                            <div class="section-header">
+                                <i class="material-icons">payments</i>
+                                <h5>Informations de Paiement</h5>
+                            </div>
+                            <div class="section-content">
+                                <p>
+                                    <strong>Frais de séjour:</strong>
+                                    {{ sejour.fraisSejour }} DT
+                                </p>
+                                <p>
+                                    <strong>Frais supplémentaires:</strong>
+                                    {{ sejour.prixExtras ?: '0' }} DT
+                                </p>
+                                <p>
+                                    <strong>Total:</strong>
+                                    {{ sejour.fraisSejour + (sejour.prixExtras ?: 0) }} DT
+                                </p>
+                                <p>
+                                    <strong>Moyen de paiement:</strong>
+                                    {{ sejour.moyenPaiement }}
+                                </p>
+                                <p>
+                                    <strong>Statut du paiement:</strong>
+                                    <span class="status-badge {{ sejour.statutPaiement == 'Payé' ? 'status-success' : 'status-warning' }}">
+                                        <i class="material-icons tiny">
+                                            {% if sejour.statutPaiement == 'Payé' %}check_circle
+                                            {% else %}pending{% endif %}
+                                        </i>
+                                        {{ sejour.statutPaiement }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .info-section {
+        background-color: #f5f5f5;
+        border-radius: 8px;
+        padding: 1.5rem;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        color: #1976d2;
+    }
+
+    .section-header h5 {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 500;
+    }
+
+    .section-content p {
+        margin: 0.5rem 0;
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 12px;
+        height: 32px;
+        font-size: 14px;
+        line-height: 32px;
+        border-radius: 16px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+
+    .chip i {
+        float: left;
+        margin: 0 8px 0 -12px;
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+        font-size: 16px;
+        line-height: 32px;
+        text-align: center;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .status-warning {
+        background-color: #fff8e1;
+        color: #f57c00;
+    }
+
+    .status-success {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+
+    /* Animation */
+    .animate-fade-up {
+        animation: fadeUp 0.5s ease-out;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 600px) {
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .header-section {
+            flex-direction: column;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .header-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+    }
+</style>
+{% endblock %} 

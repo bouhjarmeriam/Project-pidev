@@ -1,0 +1,309 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Dossier Médical{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="header-section">
+                <h3 class="header">
+                    <i class="material-icons" style="font-size: 2.5rem;">folder_shared</i>
+                    Détails du Dossier Médical
+                </h3>
+                <div class="header-actions">
+                    <a href="{{ path('app_dossier_medicale_edit', {'id': dossier_medicale.id}) }}" 
+                       class="btn waves-effect waves-light orange">
+                        <i class="material-icons left">edit</i>
+                        Modifier
+                    </a>
+                    <a href="{{ path('app_dossier_medicale_index') }}" 
+                       class="btn-flat waves-effect">
+                        <i class="material-icons left">arrow_back</i>
+                        Retour
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card animate-fade-up">
+                <div class="card-content">
+                    <div class="info-grid">
+                        <!-- Patient Information -->
+                        <div class="info-section">
+                            <div class="section-header">
+                                <i class="material-icons">person</i>
+                                <h5>Information du Patient</h5>
+                            </div>
+                            <div class="section-content">
+                                <p>
+                                    <strong>Nom complet:</strong>
+                                    {{ dossier_medicale.patient.nomUser }} {{ dossier_medicale.patient.prenomUser }}
+                                </p>
+                                {% if dossier_medicale.image %}
+                                    <div class="image-section">
+                                        <img src="{{ asset('uploads/dossiers/' ~ dossier_medicale.image) }}" 
+                                             alt="Image du dossier" 
+                                             class="responsive-img materialboxed"
+                                             style="max-width: 300px; border-radius: 8px; margin-top: 1rem;">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Doctor Information -->
+                        <div class="info-section">
+                            <div class="section-header">
+                                <i class="material-icons">medical_services</i>
+                                <h5>Médecin Traitant</h5>
+                            </div>
+                            <div class="section-content">
+                                <p>
+                                    <strong>Nom complet:</strong>
+                                    {{ dossier_medicale.medecin.nomUser }} {{ dossier_medicale.medecin.prenomUser }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- File Status -->
+                        <div class="info-section">
+                            <div class="section-header">
+                                <i class="material-icons">info</i>
+                                <h5>État du Dossier</h5>
+                            </div>
+                            <div class="section-content">
+                                <p>
+                                    <strong>Date de création:</strong>
+                                    {{ dossier_medicale.dateDeCreation ? dossier_medicale.dateDeCreation|date('d/m/Y') : '' }}
+                                </p>
+                                <p>
+                                    <strong>Statut:</strong>
+                                    <span class="status-badge {{ dossier_medicale.statutDossier == 'Actif' ? 'status-success' : 'status-warning' }}">
+                                        <i class="material-icons tiny">
+                                            {% if dossier_medicale.statutDossier == 'Actif' %}check_circle
+                                            {% else %}warning{% endif %}
+                                        </i>
+                                        {{ dossier_medicale.statutDossier }}
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Medical History -->
+                        <div class="info-section full-width">
+                            <div class="section-header">
+                                <i class="material-icons">history</i>
+                                <h5>Historique Médical</h5>
+                            </div>
+                            <div class="section-content">
+                                <div class="history-grid">
+                                    <div class="history-item">
+                                        <h6>Historique des Maladies</h6>
+                                        <p>{{ dossier_medicale.historiqueDesMaladies ?: 'Aucun historique enregistré' }}</p>
+                                    </div>
+                                    <div class="history-item">
+                                        <h6>Opérations Passées</h6>
+                                        <p>{{ dossier_medicale.operationsPassees ?: 'Aucune opération enregistrée' }}</p>
+                                    </div>
+                                    <div class="history-item">
+                                        <h6>Consultations Passées</h6>
+                                        <p>{{ dossier_medicale.consultationsPassees ?: 'Aucune consultation enregistrée' }}</p>
+                                    </div>
+                                    <div class="history-item">
+                                        <h6>Notes Additionnelles</h6>
+                                        <p>{{ dossier_medicale.notes ?: 'Aucune note additionnelle' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .info-section {
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.75rem;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .info-section:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-section.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .section-header {
+        background: linear-gradient(to right, #3b82f6, #2563eb);
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .section-header i {
+        color: white;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+    }
+
+    .section-header h5 {
+        color: white;
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+
+    .section-content {
+        padding: 1.5rem;
+    }
+
+    .section-content p {
+        margin: 0.5rem 0;
+    }
+
+    .history-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .history-item h6 {
+        color: #2563eb;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .history-item p {
+        color: #4b5563;
+        margin: 0;
+        white-space: pre-line;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .status-warning {
+        background-color: #fff8e1;
+        color: #f57c00;
+    }
+
+    .status-success {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+
+    /* Animation */
+    .animate-fade-up {
+        animation: fadeUp 0.5s ease-out;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 768px) {
+        .header-section {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .header {
+            flex-direction: column;
+        }
+
+        .header-actions {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .header-actions .btn,
+        .header-actions .btn-flat {
+            width: 100%;
+            margin: 0.5rem 0;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .history-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .image-section {
+        margin: 1rem 0;
+        text-align: center;
+    }
+
+    .image-section img {
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .image-section img:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var elems = document.querySelectorAll('.materialboxed');
+    M.Materialbox.init(elems);
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier Dossier Médical{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="header-section">
+                <h3 class="header">
+                    <i class="material-icons" style="font-size: 2.5rem;">edit</i>
+                    Modifier Dossier Médical #{{ dossier_medicale.id }}
+                </h3>
+                <div class="header-actions">
+                    <a href="{{ path('app_dossier_medicale_index') }}" 
+                       class="btn-floating btn-large waves-effect waves-light blue tooltipped"
+                       data-position="left"
+                       data-tooltip="Retour à la liste">
+                        <i class="material-icons">arrow_back</i>
+                    </a>
+                    <form method="post" action="{{ path('app_dossier_medicale_delete', {'id': dossier_medicale.id}) }}" 
+                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce dossier ?');"
+                          style="display: inline-block">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ dossier_medicale.id) }}">
+                        <button class="btn-floating btn-large waves-effect waves-light red tooltipped"
+                                data-position="left"
+                                data-tooltip="Supprimer le dossier">
+                            <i class="material-icons">delete</i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ include('dossier_medicale/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+</div>
+
+<style>
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .header-actions {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .btn-floating.red:hover {
+        background-color: #ef5350 !important;
+    }
+</style>
+{% endblock %} 

@@ -1,0 +1,415 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Espace Patient{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="header-section">
+                <h3 class="header">
+                    <i class="material-icons" style="font-size: 2.5rem;">person</i>
+                    {% if user %}
+                        Bienvenue, {{ user.prenomUser }} {{ user.nomUser }}
+                    {% else %}
+                        Bienvenue dans votre espace patient
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    {% if user %}
+        <!-- Patient Information Card -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card animate-fade-up">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <i class="material-icons">person_outline</i>
+                            Mes Informations
+                        </span>
+                        <div class="patient-info-grid">
+                            <div class="info-item">
+                                <i class="material-icons">email</i>
+                                <span class="info-label">Email:</span>
+                                <span class="info-value">{{ user.email }}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="material-icons">phone</i>
+                                <span class="info-label">Téléphone:</span>
+                                <span class="info-value">{{ user.numTelephone }}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="material-icons">location_on</i>
+                                <span class="info-label">Adresse:</span>
+                                <span class="info-value">{{ user.addresse }}</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="material-icons">cake</i>
+                                <span class="info-label">Date de naissance:</span>
+                                <span class="info-value">{{ user.dateNaissance|date('d/m/Y') }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Quick Stats -->
+            <div class="col s12 m6 l3">
+                <div class="card animate-fade-up" style="animation-delay: 0.1s;">
+                    <div class="card-content">
+                        <div class="stat-card">
+                            <div class="stat-icon blue">
+                                <i class="material-icons">folder</i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">Mes Dossiers</span>
+                                <span class="stat-value">{{ dossiers|length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 m6 l3">
+                <div class="card animate-fade-up" style="animation-delay: 0.2s;">
+                    <div class="card-content">
+                        <div class="stat-card">
+                            <div class="stat-icon orange">
+                                <i class="material-icons">hotel</i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">Mes Séjours</span>
+                                <span class="stat-value">{{ sejours|length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 m6 l3">
+                <div class="card animate-fade-up" style="animation-delay: 0.3s;">
+                    <div class="card-content">
+                        <div class="stat-card">
+                            <div class="stat-icon green">
+                                <i class="material-icons">medical_services</i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">Consultations</span>
+                                <span class="stat-value">{{ consultations|length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col s12 m6 l3">
+                <div class="card animate-fade-up" style="animation-delay: 0.4s;">
+                    <div class="card-content">
+                        <div class="stat-card">
+                            <div class="stat-icon red">
+                                <i class="material-icons">notifications</i>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">Notifications</span>
+                                <span class="stat-value">{{ notifications|length }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Medical Records Section -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card animate-fade-up" style="animation-delay: 0.5s;">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <i class="material-icons">folder_shared</i>
+                            Mes Dossiers Médicaux
+                        </span>
+                        {% if dossiers is empty %}
+                            <div class="center-align grey-text">
+                                <i class="material-icons" style="font-size: 4rem;">folder_off</i>
+                                <p>Aucun dossier médical disponible</p>
+                            </div>
+                        {% else %}
+                            <div class="collection">
+                                {% for dossier in dossiers %}
+                                    <a href="{{ path('app_front_office_dossier_show', {'id': dossier.id}) }}" 
+                                       class="collection-item avatar">
+                                        <i class="material-icons circle blue">folder</i>
+                                        <span class="title">Dossier #{{ dossier.id }}</span>
+                                        <p>
+                                            Créé le {{ dossier.dateDeCreation|date('d/m/Y') }}<br>
+                                            Dr. {{ dossier.medecin.nomUser }} {{ dossier.medecin.prenomUser }}
+                                        </p>
+                                        <span class="secondary-content">
+                                            <i class="material-icons">chevron_right</i>
+                                        </span>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="row">
+            <div class="col s12">
+                <div class="card animate-fade-up" style="animation-delay: 0.6s;">
+                    <div class="card-content">
+                        <span class="card-title">
+                            <i class="material-icons">history</i>
+                            Activité Récente
+                        </span>
+                        {% if activities is empty %}
+                            <div class="center-align grey-text">
+                                <i class="material-icons" style="font-size: 4rem;">hourglass_empty</i>
+                                <p>Aucune activité récente</p>
+                            </div>
+                        {% else %}
+                            <ul class="activity-list">
+                                {% for activity in activities %}
+                                    <li class="activity-item">
+                                        <div class="activity-icon">
+                                            <i class="material-icons">{{ activity.icon }}</i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <span class="activity-title">{{ activity.title }}</span>
+                                            <span class="activity-time">{{ activity.time|date('d/m/Y H:i') }}</span>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content center-align">
+                        <i class="material-icons" style="font-size: 4rem; color: #b0bec5;">person_off</i>
+                        <h4>Aucun utilisateur trouvé</h4>
+                        <p>Veuillez vous connecter ou créer un compte pour accéder à votre espace patient.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    .header-section {
+        margin: 2rem 0;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+        color: #1f2937;
+    }
+
+    .patient-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+        background: #f1f3f5;
+        transform: translateY(-2px);
+    }
+
+    .info-item i {
+        color: #2196f3;
+    }
+
+    .info-label {
+        font-weight: 500;
+        color: #6c757d;
+        margin-right: 0.5rem;
+    }
+
+    .info-value {
+        color: #212529;
+    }
+
+    .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .stat-icon.blue { background: #3b82f6; }
+    .stat-icon.orange { background: #f59e0b; }
+    .stat-icon.green { background: #10b981; }
+    .stat-icon.red { background: #ef4444; }
+
+    .stat-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stat-title {
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    .stat-value {
+        color: #1f2937;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .collection .collection-item.avatar {
+        min-height: 84px;
+        padding-left: 72px;
+        position: relative;
+    }
+
+    .collection .collection-item.avatar .circle {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background-color: #2196f3;
+        position: absolute;
+        left: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .collection .collection-item.avatar .title {
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: #1f2937;
+    }
+
+    .collection .collection-item.avatar p {
+        color: #6b7280;
+    }
+
+    .activity-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .activity-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+        transition: background-color 0.3s ease;
+    }
+
+    .activity-item:last-child {
+        border-bottom: none;
+    }
+
+    .activity-item:hover {
+        background-color: #f8fafc;
+    }
+
+    .activity-icon {
+        background: #e5e7eb;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4b5563;
+    }
+
+    .activity-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .activity-title {
+        color: #1f2937;
+        font-weight: 500;
+    }
+
+    .activity-time {
+        color: #6b7280;
+        font-size: 0.875rem;
+    }
+
+    /* Animation */
+    .animate-fade-up {
+        animation: fadeUp 0.5s ease-out;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 768px) {
+        .patient-info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .stat-card {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .activity-item {
+            flex-direction: column;
+            text-align: center;
+            gap: 0.5rem;
+        }
+
+        .activity-icon {
+            margin: 0 auto;
+        }
+    }
+</style>
+{% endblock %} 

@@ -1,17 +1,500 @@
-  <!DOCTYPE html>
+{# templates/base.html.twig #}
+
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        
+        {# Enhanced UI Dependencies #}
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@6.5.95/css/materialdesignicons.min.css">
+        
+        {# Custom CSS with enhanced design #}
+        <style>
+            :root {
+                --primary-gradient: linear-gradient(135deg, #3B82F6, #1D4ED8);
+                --secondary-gradient: linear-gradient(135deg, #6366F1, #4F46E5);
+                --success-gradient: linear-gradient(135deg, #22C55E, #16A34A);
+                --warning-gradient: linear-gradient(135deg, #F59E0B, #D97706);
+                --error-gradient: linear-gradient(135deg, #EF4444, #DC2626);
+                --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                --card-hover-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+                --transition-bezier: cubic-bezier(0.4, 0, 0.2, 1);
+                --border-radius: 1rem;
+            }
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+            body {
+                font-family: 'Poppins', sans-serif;
+                background-color: #F8FAFC;
+                color: #1E293B;
+                line-height: 1.6;
+                display: flex;
+                min-height: 100vh;
+                flex-direction: column;
+            }
+
+            main {
+                flex: 1 0 auto;
+                padding: 2rem 0;
+            }
+
+            /* Enhanced Navigation */
+            nav {
+                background: var(--primary-gradient);
+                height: 80px;
+                line-height: 80px;
+                padding: 0 2rem;
+                box-shadow: var(--card-shadow);
+            }
+
+            nav .brand-logo {
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                height: 80px;
+            }
+
+            nav .brand-logo i {
+                font-size: 2.5rem;
+                transition: transform 0.3s var(--transition-bezier);
+            }
+
+            nav .brand-logo:hover i {
+                transform: rotate(-10deg);
+            }
+
+            nav ul a {
+                position: relative;
+                overflow: hidden;
+            }
+
+            nav ul a::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                background-color: white;
+                transform: translateX(-100%);
+                transition: transform 0.3s var(--transition-bezier);
+            }
+
+            nav ul a:hover::after {
+                transform: translateX(0);
+            }
+
+            /* Enhanced Cards */
+            .card {
+                border-radius: var(--border-radius);
+                background: white;
+                box-shadow: var(--card-shadow);
+                transition: all 0.3s var(--transition-bezier);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                overflow: hidden;
+                position: relative;
+            }
+
+            .card::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 4px;
+                background: var(--primary-gradient);
+                transform: scaleX(0);
+                transform-origin: left;
+                transition: transform 0.3s var(--transition-bezier);
+            }
+
+            .card:hover::before {
+                transform: scaleX(1);
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: var(--card-hover-shadow);
+            }
+
+            .card .card-content {
+                padding: 2rem;
+            }
+
+            .card .card-title {
+                font-weight: 600;
+                color: #1E293B;
+                margin-bottom: 1.5rem;
+                font-size: 1.5rem;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+            }
+
+            .card .card-title i {
+                color: #3B82F6;
+                font-size: 2rem;
+            }
+
+            /* Enhanced Image Display */
+            .medical-image-container {
+                position: relative;
+                border-radius: var(--border-radius);
+                overflow: hidden;
+                margin: 1rem 0;
+            }
+
+            .medical-image {
+                width: 100%;
+                height: auto;
+                display: block;
+                transition: transform 0.3s var(--transition-bezier);
+            }
+
+            .medical-image-container:hover .medical-image {
+                transform: scale(1.05);
+            }
+
+            .medical-image-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+                opacity: 0;
+                transition: opacity 0.3s var(--transition-bezier);
+                display: flex;
+                align-items: flex-end;
+                padding: 1rem;
+            }
+
+            .medical-image-container:hover .medical-image-overlay {
+                opacity: 1;
+            }
+
+            .medical-image-overlay .btn-floating {
+                transform: translateY(20px);
+                transition: transform 0.3s var(--transition-bezier);
+            }
+
+            .medical-image-container:hover .medical-image-overlay .btn-floating {
+                transform: translateY(0);
+            }
+
+            /* Enhanced Buttons */
+            .btn, .btn-large {
+                background: var(--primary-gradient);
+                border-radius: 0.75rem;
+                text-transform: none;
+                font-weight: 500;
+                padding: 0 2rem;
+                height: 3rem;
+                line-height: 3rem;
+                box-shadow: var(--card-shadow);
+                transition: all 0.3s var(--transition-bezier);
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .btn i, .btn-large i {
+                font-size: 1.2rem;
+            }
+
+            .btn:hover, .btn-large:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--card-hover-shadow);
+            }
+
+            .btn-floating {
+                background: var(--primary-gradient);
+                transition: all 0.3s var(--transition-bezier);
+            }
+
+            .btn-floating:hover {
+                transform: translateY(-2px) rotate(90deg);
+            }
+
+            /* Enhanced Status Badges */
+            .status-badge {
+                padding: 0.5rem 1rem;
+                border-radius: 9999px;
+                font-weight: 500;
+                font-size: 0.875rem;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                box-shadow: var(--card-shadow);
+            }
+
+            .status-badge i {
+                font-size: 1.2rem;
+            }
+
+            .status-success {
+                background: var(--success-gradient);
+                color: white;
+            }
+
+            .status-warning {
+                background: var(--warning-gradient);
+                color: white;
+            }
+
+            .status-error {
+                background: var(--error-gradient);
+                color: white;
+            }
+
+            /* Fixed Footer */
+            footer.page-footer {
+                background: var(--primary-gradient);
+                margin-top: 2rem;
+                padding-top: 2rem;
+            }
+
+            footer .footer-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 2rem 0;
+            }
+
+            footer .footer-links {
+                display: flex;
+                gap: 2rem;
+            }
+
+            footer .footer-links h6 {
+                color: white;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            footer .footer-links ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            footer .footer-links a {
+                color: rgba(255, 255, 255, 0.7);
+                transition: color 0.3s var(--transition-bezier);
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            footer .footer-links a:hover {
+                color: white;
+            }
+
+            footer .footer-copyright {
+                background: rgba(0, 0, 0, 0.1);
+                padding: 1.5rem 0;
+            }
+
+            /* Responsive Enhancements */
+            @media only screen and (max-width: 992px) {
+                nav {
+                    padding: 0 1rem;
+                }
+
+                .card .card-content {
+                    padding: 1.5rem;
+                }
+
+                footer .footer-content {
+                    flex-direction: column;
+                    gap: 2rem;
+                }
+
+                footer .footer-links {
+                    flex-wrap: wrap;
+                }
+            }
+
+            @media only screen and (max-width: 600px) {
+                nav {
+                    height: 70px;
+                    line-height: 70px;
+                }
+
+                nav .brand-logo {
+                    height: 70px;
+                }
+
+                .card .card-content {
+                    padding: 1rem;
+                }
+
+                footer .footer-links {
+                    flex-direction: column;
+                    gap: 1.5rem;
+                }
+            }
+        </style>
+
+        {% block stylesheets %}{% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        {# Enhanced Navigation #}
+        <nav class="animate-fade-in">
+            <div class="nav-wrapper">
+                <a href="{{ path('app_front_office_dashboard') }}" class="brand-logo">
+                    <i class="material-icons">local_hospital</i>
+                    <span class="hide-on-small-only">Gestion Hospitalière</span>
+                </a>
+                <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{{ path('app_front_office_dashboard') }}" class="waves-effect waves-light">
+                        <i class="material-icons left">person</i>Espace Patient
+                    </a></li>
+                    <li><a href="{{ path('app_dossier_medicale_index') }}" class="waves-effect waves-light">
+                        <i class="material-icons left">folder</i>Dossiers Médicaux
+                    </a></li>
+                    <li><a href="{{ path('app_sejour_index') }}" class="waves-effect waves-light">
+                        <i class="material-icons left">event</i>Séjours
+                    </a></li>
+                </ul>
+            </div>
+        </nav>
+
+        {# Mobile Navigation #}
+        <ul class="sidenav" id="mobile-nav">
+            <li>
+                <div class="user-view">
+                    <div class="background" style="background: var(--primary-gradient)">
+                        <div style="height: 150px;"></div>
+                    </div>
+                    <a><i class="material-icons white-text" style="font-size: 4rem;">local_hospital</i></a>
+                    <a><span class="white-text name" style="font-size: 1.5rem;">Gestion Hospitalière</span></a>
+                </div>
+            </li>
+            <li><a href="{{ path('app_front_office_dashboard') }}" class="waves-effect">
+                <i class="material-icons">person</i>Espace Patient
+            </a></li>
+            <li><div class="divider"></div></li>
+            <li><a href="{{ path('app_dossier_medicale_index') }}" class="waves-effect">
+                <i class="material-icons">folder</i>Dossiers Médicaux
+            </a></li>
+            <li><a href="{{ path('app_sejour_index') }}" class="waves-effect">
+                <i class="material-icons">event</i>Séjours
+            </a></li>
+        </ul>
+
+        {# Main Content with Animation #}
+        <main class="animate-fade-up">
+            {% block body %}{% endblock %}
+        </main>
+
+        {# Enhanced Footer #}
+        <footer class="page-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-info">
+                        <h5 class="white-text">Gestion Hospitalière</h5>
+                        <p class="grey-text text-lighten-4">Un système moderne de gestion hospitalière pour un meilleur suivi des patients.</p>
+                    </div>
+                    <div class="footer-links">
+                        <div>
+                            <h6>Navigation</h6>
+                            <ul>
+                                <li><a href="{{ path('app_front_office_dashboard') }}">
+                                    <i class="material-icons tiny">home</i>Accueil
+                                </a></li>
+                                <li><a href="{{ path('app_dossier_medicale_index') }}">
+                                    <i class="material-icons tiny">folder</i>Dossiers Médicaux
+                                </a></li>
+                                <li><a href="{{ path('app_sejour_index') }}">
+                                    <i class="material-icons tiny">event</i>Séjours
+                                </a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h6>Services</h6>
+                            <ul>
+                                <li><a href="#"><i class="material-icons tiny">medical_services</i>Consultations</a></li>
+                                <li><a href="#"><i class="material-icons tiny">local_pharmacy</i>Pharmacie</a></li>
+                                <li><a href="#"><i class="material-icons tiny">emergency</i>Urgences</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h6>Contact</h6>
+                            <ul>
+                                <li><a href="#"><i class="material-icons tiny">phone</i>Téléphone</a></li>
+                                <li><a href="#"><i class="material-icons tiny">email</i>Email</a></li>
+                                <li><a href="#"><i class="material-icons tiny">location_on</i>Adresse</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">
+                    © {{ "now"|date("Y") }} Tous droits réservés
+                    <a class="grey-text text-lighten-4 right" href="#">À propos</a>
+                </div>
+            </div>
+        </footer>
+
+        {# Scripts #}
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize all Materialize components
+                M.AutoInit();
+
+                // Enhanced Sidenav
+                var sidenav = document.querySelectorAll('.sidenav');
+                M.Sidenav.init(sidenav, {
+                    edge: 'left',
+                    draggable: true,
+                    inDuration: 250,
+                    outDuration: 200
+                });
+
+                // Animate elements on page load
+                document.querySelectorAll('.card').forEach(function(card, index) {
+                    card.classList.add('animate-fade-up');
+                    card.style.animationDelay = (index * 0.1) + 's';
+                });
+
+                // Initialize tooltips
+                var tooltips = document.querySelectorAll('.tooltipped');
+                M.Tooltip.init(tooltips, {
+                    position: 'top',
+                    enterDelay: 200,
+                    exitDelay: 100
+                });
+
+                // Enhanced Toast Messages
+                {% for message in app.flashes('success') %}
+                    M.toast({
+                        html: '<i class="material-icons left">check_circle</i>{{ message }}',
+                        classes: 'success rounded',
+                        displayLength: 4000
+                    });
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                    M.toast({
+                        html: '<i class="material-icons left">error</i>{{ message }}',
+                        classes: 'error rounded',
+                        displayLength: 4000
+                    });
+                {% endfor %}
+            });
+        </script>
+
+        {% block javascripts %}{% endblock %}
     </body>
 </html>

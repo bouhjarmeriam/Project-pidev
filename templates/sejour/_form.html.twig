@@ -1,0 +1,419 @@
+{{ form_start(form, {'attr': {'class': 'form-container animate-fade-up'}}) }}
+    <div class="form-header">
+        <div class="header-icon">
+            <i class="material-icons">hotel</i>
+        </div>
+        <div class="header-content">
+            <h4 class="header-title">{{ button_label is defined ? 'Modifier le séjour' : 'Nouveau séjour' }}</h4>
+            <p class="header-subtitle">Veuillez remplir les informations du séjour</p>
+        </div>
+    </div>
+
+    <div class="form-body">
+        <div class="form-section">
+            <div class="section-header">
+                <i class="material-icons">folder_shared</i>
+                <h5>Dossier Médical</h5>
+            </div>
+            <div class="section-content">
+                <div class="input-field">
+                    {{ form_widget(form.dossierMedicale, {
+                        'attr': {
+                            'class': 'select-custom',
+                            'placeholder': 'Sélectionner un dossier médical'
+                        }
+                    }) }}
+                    {{ form_label(form.dossierMedicale, null, {'label_attr': {'class': 'active'}}) }}
+                    {{ form_errors(form.dossierMedicale, {'attr': {'class': 'error-message'}}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-header">
+                <i class="material-icons">calendar_today</i>
+                <h5>Période du Séjour</h5>
+            </div>
+            <div class="section-content">
+                <div class="date-range-group">
+                    <div class="input-field">
+                        {{ form_widget(form.dateEntree, {
+                            'attr': {
+                                'class': 'datepicker-custom',
+                                'placeholder': 'JJ/MM/AAAA'
+                            }
+                        }) }}
+                        {{ form_label(form.dateEntree, 'Date d\'entrée', {'label_attr': {'class': 'active'}}) }}
+                        {{ form_errors(form.dateEntree, {'attr': {'class': 'error-message'}}) }}
+                    </div>
+
+                    <div class="input-field">
+                        {{ form_widget(form.dateSortie, {
+                            'attr': {
+                                'class': 'datepicker-custom',
+                                'placeholder': 'JJ/MM/AAAA'
+                            }
+                        }) }}
+                        {{ form_label(form.dateSortie, 'Date de sortie', {'label_attr': {'class': 'active'}}) }}
+                        {{ form_errors(form.dateSortie, {'attr': {'class': 'error-message'}}) }}
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    {{ form_widget(form.typeSejour, {
+                        'attr': {
+                            'class': 'select-custom',
+                            'placeholder': 'Sélectionner le type de séjour'
+                        }
+                    }) }}
+                    {{ form_label(form.typeSejour, null, {'label_attr': {'class': 'active'}}) }}
+                    {{ form_errors(form.typeSejour, {'attr': {'class': 'error-message'}}) }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="section-header">
+                <i class="material-icons">payments</i>
+                <h5>Informations Financières</h5>
+            </div>
+            <div class="section-content">
+                <div class="price-group">
+                    <div class="input-field">
+                        {{ form_widget(form.fraisSejour, {
+                            'attr': {
+                                'class': 'input-custom price-input',
+                                'placeholder': '0.00',
+                                'step': '0.01',
+                                'min': '0'
+                            }
+                        }) }}
+                        {{ form_label(form.fraisSejour, null, {'label_attr': {'class': 'active'}}) }}
+                        {{ form_errors(form.fraisSejour, {'attr': {'class': 'error-message'}}) }}
+                        <span class="currency-symbol">DT</span>
+                    </div>
+
+                    <div class="input-field">
+                        {{ form_widget(form.prixExtras, {
+                            'attr': {
+                                'class': 'input-custom price-input',
+                                'placeholder': '0.00',
+                                'step': '0.01',
+                                'min': '0'
+                            }
+                        }) }}
+                        {{ form_label(form.prixExtras, null, {'label_attr': {'class': 'active'}}) }}
+                        {{ form_errors(form.prixExtras, {'attr': {'class': 'error-message'}}) }}
+                        <span class="currency-symbol">DT</span>
+                    </div>
+                </div>
+
+                <div class="payment-status-group">
+                    <div class="input-field">
+                        {{ form_widget(form.moyenPaiement, {
+                            'attr': {
+                                'class': 'select-custom',
+                                'placeholder': 'Sélectionner le moyen de paiement'
+                            }
+                        }) }}
+                        {{ form_label(form.moyenPaiement, null, {'label_attr': {'class': 'active'}}) }}
+                        {{ form_errors(form.moyenPaiement, {'attr': {'class': 'error-message'}}) }}
+                    </div>
+
+                    <div class="input-field">
+                        {{ form_widget(form.statutPaiement, {
+                            'attr': {
+                                'class': 'select-custom',
+                                'placeholder': 'Sélectionner le statut'
+                            }
+                        }) }}
+                        {{ form_label(form.statutPaiement, null, {'label_attr': {'class': 'active'}}) }}
+                        {{ form_errors(form.statutPaiement, {'attr': {'class': 'error-message'}}) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-footer">
+        <div class="action-buttons">
+            <a href="{{ path('app_sejour_index') }}" class="btn-flat waves-effect">
+                <i class="material-icons left">arrow_back</i>
+                Retour
+            </a>
+            <button class="btn primary waves-effect waves-light" type="submit">
+                <i class="material-icons left">save</i>
+                {{ button_label|default('Enregistrer') }}
+            </button>
+        </div>
+    </div>
+{{ form_end(form) }}
+
+<style>
+    :root {
+        --primary-color: #2563eb;
+        --primary-light: #3b82f6;
+        --primary-dark: #1d4ed8;
+        --error-color: #ef4444;
+        --success-color: #10b981;
+        --text-color: #1f2937;
+        --text-light: #6b7280;
+        --bg-light: #f8fafc;
+        --border-color: #e2e8f0;
+        --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+
+    .form-container {
+        background: white;
+        border-radius: 1rem;
+        box-shadow: var(--card-shadow);
+        margin: 2rem auto;
+        max-width: 1200px;
+        overflow: hidden;
+    }
+
+    .form-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        padding: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+    }
+
+    .header-icon {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 1rem;
+        padding: 1rem;
+    }
+
+    .header-icon i {
+        font-size: 2.5rem;
+    }
+
+    .header-content {
+        flex: 1;
+    }
+
+    .header-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .header-subtitle {
+        margin: 0.5rem 0 0;
+        opacity: 0.8;
+    }
+
+    .form-body {
+        padding: 2rem;
+    }
+
+    .form-section {
+        background: white;
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+
+    .section-header {
+        background: var(--bg-light);
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-header i {
+        color: var(--primary-color);
+    }
+
+    .section-header h5 {
+        margin: 0;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .section-content {
+        padding: 1.5rem;
+    }
+
+    .input-field {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .input-field:last-child {
+        margin-bottom: 0;
+    }
+
+    .input-field label {
+        color: var(--text-light);
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: all 0.2s ease;
+    }
+
+    .input-field label.active {
+        color: var(--primary-color);
+        transform: translateY(-1.5rem);
+    }
+
+    .select-custom, .datepicker-custom, .input-custom {
+        border: 2px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 0.75rem 1rem;
+        width: 100%;
+        background-color: white;
+        transition: all 0.3s ease;
+        height: 3rem;
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+
+    .select-custom:focus, .datepicker-custom:focus, .input-custom:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        outline: none;
+    }
+
+    .date-range-group, .price-group, .payment-status-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .price-input {
+        padding-right: 3rem !important;
+    }
+
+    .currency-symbol {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
+        font-weight: 500;
+    }
+
+    .error-message {
+        color: var(--error-color);
+        font-size: 0.75rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    .form-footer {
+        background: var(--bg-light);
+        padding: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+    }
+
+    .btn.primary {
+        background-color: var(--primary-color);
+        border-radius: 0.5rem;
+        text-transform: none;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: all 0.2s ease;
+    }
+
+    .btn.primary:hover {
+        background-color: var(--primary-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-flat {
+        color: var(--text-light);
+        border-radius: 0.5rem;
+        text-transform: none;
+        font-weight: 500;
+        padding: 0.75rem 1.5rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .btn-flat:hover {
+        background-color: var(--bg-light);
+        color: var(--text-color);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .form-container {
+            margin: 1rem;
+        }
+
+        .form-header {
+            padding: 1.5rem;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .form-body {
+            padding: 1rem;
+        }
+
+        .date-range-group, .price-group, .payment-status-group {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        .action-buttons {
+            flex-direction: column-reverse;
+        }
+
+        .btn, .btn-flat {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    /* Animations */
+    .animate-fade-up {
+        animation: fadeUp 0.5s ease-out;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Section hover effects */
+    .form-section {
+        transition: all 0.3s ease;
+    }
+
+    .form-section:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transform: translateY(-2px);
+    }
+
+    .section-header {
+        transition: background-color 0.3s ease;
+    }
+
+    .form-section:hover .section-header {
+        background-color: #f1f5f9;
+    }
+</style> 
