@@ -1,0 +1,247 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Séjours{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="header-section">
+                <h3 class="header">
+                    <i class="material-icons" style="font-size: 2.5rem;">hotel</i>
+                    Gestion des Séjours
+                </h3>
+                <a href="{{ path('app_sejour_new') }}" class="btn-floating btn-large waves-effect waves-light blue pulse tooltipped" data-position="left" data-tooltip="Créer un nouveau séjour">
+                    <i class="material-icons">add</i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col s12">
+            <div class="card animate-fade-up">
+                <div class="card-content">
+                    <span class="card-title">
+                        <i class="material-icons">list</i>
+                        Liste des Séjours
+                    </span>
+
+                    {% if sejours is empty %}
+                        <div class="center-align grey-text">
+                            <i class="material-icons" style="font-size: 4rem;">hotel_class</i>
+                            <p>Aucun séjour n'a été créé.</p>
+                            <a href="{{ path('app_sejour_new') }}" class="btn waves-effect waves-light blue">
+                                <i class="material-icons left">add</i>
+                                Créer le premier séjour
+                            </a>
+                        </div>
+                    {% else %}
+                        <table class="striped highlight responsive-table">
+                            <thead>
+                                <tr>
+                                    <th><i class="material-icons tiny">tag</i> ID</th>
+                                    <th><i class="material-icons tiny">person</i> Patient</th>
+                                    <th><i class="material-icons tiny">event</i> Date d'entrée</th>
+                                    <th><i class="material-icons tiny">event_busy</i> Date de sortie</th>
+                                    <th><i class="material-icons tiny">category</i> Type</th>
+                                    <th><i class="material-icons tiny">payments</i> Frais</th>
+                                    <th><i class="material-icons tiny">more_vert</i> Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for sejour in sejours %}
+                                <tr class="animate-fade-up" style="animation-delay: {{ loop.index * 0.1 }}s">
+                                    <td>#{{ sejour.id }}</td>
+                                    <td>
+                                        <div class="patient-info">
+                                            <i class="material-icons tiny">person</i>
+                                            {{ sejour.dossierMedicale.patient.nomUser }} {{ sejour.dossierMedicale.patient.prenomUser }}
+                                        </div>
+                                    </td>
+                                    <td>{{ sejour.dateEntree ? sejour.dateEntree|date('d/m/Y') : '' }}</td>
+                                    <td>{{ sejour.dateSortie ? sejour.dateSortie|date('d/m/Y') : '' }}</td>
+                                    <td>
+                                        <span class="status-badge {{ sejour.typeSejour == 'Hospitalisation' ? 'status-warning' : 'status-info' }}">
+                                            <i class="material-icons tiny">
+                                                {% if sejour.typeSejour == 'Hospitalisation' %}local_hotel
+                                                {% elseif sejour.typeSejour == 'Consultation' %}medical_services
+                                                {% else %}emergency{% endif %}
+                                            </i>
+                                            {{ sejour.typeSejour }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="price-info">
+                                            <i class="material-icons tiny">payments</i>
+                                            {{ sejour.fraisSejour }} DT
+                                        </div>
+                                    </td>
+                                    <td class="actions-cell">
+                                        <div class="action-buttons">
+                                            <a href="{{ path('app_sejour_show', {'id': sejour.id}) }}" 
+                                               class="btn-floating waves-effect waves-light blue tooltipped"
+                                               data-position="top"
+                                               data-tooltip="Voir les détails">
+                                                <i class="material-icons">visibility</i>
+                                            </a>
+                                            <a href="{{ path('app_sejour_edit', {'id': sejour.id}) }}" 
+                                               class="btn-floating waves-effect waves-light orange tooltipped"
+                                               data-position="top"
+                                               data-tooltip="Modifier">
+                                                <i class="material-icons">edit</i>
+                                            </a>
+                                            <form method="post" action="{{ path('app_sejour_delete', {'id': sejour.id}) }}" style="display: inline-block" 
+                                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce séjour ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ sejour.id) }}">
+                                                <button type="submit" class="btn-floating waves-effect waves-light red tooltipped"
+                                                        data-position="top"
+                                                        data-tooltip="Supprimer">
+                                                    <i class="material-icons">delete</i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+
+    .patient-info, .price-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .actions-cell {
+        width: 180px;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-start;
+    }
+
+    .action-buttons .btn-floating {
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
+    }
+
+    .action-buttons .btn-floating i {
+        font-size: 1.2rem;
+        line-height: 35px;
+    }
+
+    /* Status badges */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .status-warning {
+        background-color: #fff8e1;
+        color: #f57c00;
+    }
+
+    .status-info {
+        background-color: #e3f2fd;
+        color: #1976d2;
+    }
+
+    .status-success {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+
+    /* Enhanced Empty State */
+    .center-align.grey-text {
+        padding: 3rem 0;
+    }
+
+    .center-align.grey-text i {
+        margin-bottom: 1rem;
+        color: #b0bec5;
+    }
+
+    .center-align.grey-text p {
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+        color: #78909c;
+    }
+
+    /* Animation */
+    .animate-fade-up {
+        animation: fadeUp 0.5s ease-out;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive table adjustments */
+    @media screen and (max-width: 992px) {
+        .responsive-table {
+            font-size: 0.9rem;
+        }
+        
+        .status-badge {
+            font-size: 0.8rem;
+            padding: 0.2rem 0.5rem;
+        }
+        
+        .action-buttons .btn-floating {
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+        }
+        
+        .action-buttons .btn-floating i {
+            font-size: 1rem;
+            line-height: 30px;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    var tooltips = document.querySelectorAll('.tooltipped');
+    M.Tooltip.init(tooltips);
+});
+</script>
+{% endblock %} 

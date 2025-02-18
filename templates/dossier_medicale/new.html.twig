@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Dossier Médical{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <div class="header-section">
+                <h3 class="header">
+                    <i class="material-icons" style="font-size: 2.5rem;">add_circle</i>
+                    Nouveau Dossier Médical
+                </h3>
+                <a href="{{ path('app_dossier_medicale_index') }}" 
+                   class="btn-floating btn-large waves-effect waves-light blue tooltipped"
+                   data-position="left"
+                   data-tooltip="Retour à la liste">
+                    <i class="material-icons">arrow_back</i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {{ include('dossier_medicale/_form.html.twig') }}
+</div>
+
+<style>
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 2rem 0;
+    }
+
+    .header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin: 0;
+    }
+</style>
+{% endblock %} 

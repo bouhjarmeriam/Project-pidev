@@ -1,0 +1,235 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Dossier Médical{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col s12">
+            <a href="{{ path('app_front_office_dashboard') }}" 
+               class="btn-floating btn-large waves-effect waves-light blue">
+                <i class="material-icons">arrow_back</i>
+            </a>
+            <h3>Dossier Médical #{{ dossier.id }}</h3>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Patient Information -->
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Information du Patient</span>
+                    <p>
+                        <strong>Nom complet:</strong> {{ dossier.patient.nomUser }} {{ dossier.patient.prenomUser }}<br>
+                        <strong>Email:</strong> {{ dossier.patient.email }}<br>
+                        <strong>Téléphone:</strong> {{ dossier.patient.numTelephone }}<br>
+                        <strong>Adresse:</strong> {{ dossier.patient.addresse }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Doctor Information -->
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Médecin Traitant</span>
+                    <p>
+                        <strong>Nom complet:</strong> Dr. {{ dossier.medecin.nomUser }} {{ dossier.medecin.prenomUser }}<br>
+                        <strong>Email:</strong> {{ dossier.medecin.email }}<br>
+                        <strong>Téléphone:</strong> {{ dossier.medecin.numTelephone }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical History -->
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Historique Médical</span>
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <h6>Historique des Maladies</h6>
+                            <p>{{ dossier.historiqueDesMaladies ?: 'Aucun historique enregistré' }}</p>
+                        </div>
+                        <div class="col s12 m6">
+                            <h6>Opérations Passées</h6>
+                            <p>{{ dossier.operationsPassees ?: 'Aucune opération enregistrée' }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m6">
+                            <h6>Consultations Passées</h6>
+                            <p>{{ dossier.consultationsPassees ?: 'Aucune consultation enregistrée' }}</p>
+                        </div>
+                        <div class="col s12 m6">
+                            <h6>Notes Additionnelles</h6>
+                            <p>{{ dossier.notes ?: 'Aucune note additionnelle' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stays -->
+    <div class="row">
+        <div class="col s12">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title">Séjours</span>
+                    {% if sejours is empty %}
+                        <p class="center-align grey-text">Aucun séjour enregistré</p>
+                    {% else %}
+                        <table class="striped">
+                            <thead>
+                                <tr>
+                                    <th>Date d'entrée</th>
+                                    <th>Date de sortie</th>
+                                    <th>Type</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sejour in sejours %}
+                                    <tr class="animate-fade-up" style="animation-delay: {{ loop.index * 0.1 }}s">
+                                        <td>{{ sejour.dateEntree|date('d/m/Y H:i') }}</td>
+                                        <td>{{ sejour.dateSortie|date('d/m/Y H:i') }}</td>
+                                        <td>
+                                            <span class="chip">
+                                                <i class="material-icons tiny">{{ sejour.typeSejour == 'Hospitalisation' ? 'hotel' : 'medical_services' }}</i>
+                                                {{ sejour.typeSejour }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="status-badge {{ sejour.statutPaiement == 'Payé' ? 'status-success' : 'status-warning' }}">
+                                                <i class="material-icons tiny">{{ sejour.statutPaiement == 'Payé' ? 'check_circle' : 'pending' }}</i>
+                                                {{ sejour.statutPaiement }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{ path('app_front_office_sejour_show', {'id': sejour.id}) }}" 
+                                               class="btn-floating waves-effect waves-light blue tooltipped"
+                                               data-position="top"
+                                               data-tooltip="Voir les détails">
+                                                <i class="material-icons">visibility</i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        margin-top: 1rem;
+    }
+
+    .card-title {
+        border-bottom: 2px solid #e0e0e0;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+        font-weight: 500;
+    }
+
+    h6 {
+        font-weight: 500;
+        color: #2196f3;
+        margin-bottom: 0.5rem;
+    }
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 12px;
+        height: 32px;
+        font-size: 14px;
+        line-height: 32px;
+        border-radius: 16px;
+        background-color: #e4e4e4;
+        margin-right: 5px;
+        margin-bottom: 5px;
+    }
+
+    .chip i {
+        float: left;
+        margin: 0 8px 0 -12px;
+        height: 32px;
+        width: 32px;
+        border-radius: 50%;
+        font-size: 16px;
+        line-height: 32px;
+        text-align: center;
+        background-color: #979797;
+        color: white;
+    }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .status-warning {
+        background-color: #fff8e1;
+        color: #f57c00;
+    }
+
+    .status-success {
+        background-color: #e8f5e9;
+        color: #388e3c;
+    }
+
+    /* Animation */
+    .animate-fade-up {
+        animation: fadeUp 0.5s ease-out;
+    }
+
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 600px) {
+        .btn-floating {
+            width: 36px;
+            height: 36px;
+            line-height: 36px;
+        }
+
+        .btn-floating i {
+            line-height: 36px;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize tooltips
+    var tooltips = document.querySelectorAll('.tooltipped');
+    M.Tooltip.init(tooltips);
+});
+</script>
+{% endblock %} 
