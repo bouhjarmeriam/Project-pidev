@@ -1,0 +1,156 @@
+ {% extends 'admin/base.html.twig' %}
+
+{% block title %}Modifier Consultation{% endblock %}
+
+{% block body %}
+    <h1>Modifier Consultation</h1>
+
+    <div class="form-container">
+        <a href="{{ path('app_consultation_edit', {'id': consultation.id}) }}" class></a>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        <!-- Service Field -->
+        <div class="form-group">
+            {{ form_label(form.service, 'Choisir Service', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.service, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.service) }}
+            </div>
+        </div>
+
+        <!-- Date Field -->
+        <div class="form-group">
+            {{ form_label(form.date, 'Consultation Date', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.date) }}
+            </div>
+        </div>
+
+        <!-- Patient Identifier Field -->
+        <div class="form-group">
+            {{ form_label(form.patientIdentifier, 'Patient Identifier', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.patientIdentifier, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.patientIdentifier) }}
+            </div>
+        </div>
+
+        <!-- Status Field (Visible for admins only) -->
+        {% if is_granted('ROLE_ADMIN') %}
+        <div class="form-group">
+            {{ form_label(form.status, 'Consultation Status', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.status) }}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            <button type="submit" class="btn-save">Enregistrer</button>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 30px;
+            font-size: 2em;
+        }
+
+        .form-container {
+            width: 50%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 1.1em;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 5px;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .form-error {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-save:hover {
+            background-color: #2ecc71;
+        }
+
+        .btn-edit {
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 1em;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .btn-edit:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                width: 80%;
+            }
+
+            h1 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+{% endblock %}

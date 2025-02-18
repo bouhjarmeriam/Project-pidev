@@ -1,0 +1,146 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Consultations List{% endblock %}
+
+{% block body %}
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #0d47a1, #1976d2); /* Blue gradient */
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container */
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            border-left: 8px solid #d32f2f; /* Red accent */
+            color: #333;
+        }
+
+        /* Heading */
+        h1 {
+            color: #d32f2f; /* Red */
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        /* Table Styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: #f4f4f4;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 2px solid #ddd;
+        }
+
+        th {
+            background: #1976d2; /* Blue */
+            color: white;
+            font-size: 18px;
+        }
+
+        td {
+            color: #333;
+        }
+
+        /* Alternating row colors */
+        tbody tr:nth-child(odd) {
+            background: #e3f2fd; /* Light blue */
+        }
+
+        tbody tr:nth-child(even) {
+            background: #bbdefb; /* Slightly darker blue */
+        }
+
+        /* Edit Status Link */
+        a {
+            display: inline-block;
+            text-decoration: none;
+            font-size: 16px;
+            color: #d32f2f; /* Red */
+            font-weight: bold;
+            padding: 8px 12px;
+            border: 2px solid #d32f2f;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            background: #d32f2f; /* Red */
+            color: white;
+        }
+
+        /* No Consultations Message */
+        p {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <h1>Consultations List</h1>
+
+        {% if consultations is not empty %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Patient Identifier</th>
+                        <th>Date</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for consultation in consultations %}
+                        <tr>
+                            <td>{{ consultation.patientIdentifier }}</td>
+                            <td>{{ consultation.date|date('Y-m-d H:i') }}</td>
+                            <td>{{ consultation.service.name }}</td>
+                            <td>{{ consultation.status }}</td>
+                            <td>
+                                {% if consultation.status != 'Completed' %}
+                                    <a href="{{ path('app_edit_consultation_status', { id: consultation.id }) }}">Modifier Status</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>Pas de consultations trouver.</p>
+        {% endif %}
+    </div>
+{% endblock %}

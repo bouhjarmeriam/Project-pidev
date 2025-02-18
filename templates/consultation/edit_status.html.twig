@@ -1,0 +1,123 @@
+ {% extends 'base.html.twig' %}
+
+{% block title %}Modifier Consultation Status{% endblock %}
+
+{% block body %}
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #0d47a1, #1976d2); /* Blue gradient */
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Container */
+        .container {
+            width: 40%;
+            margin: 50px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+            border-left: 8px solid #d32f2f; /* Red accent */
+            color: #333;
+        }
+
+        /* Heading */
+        h1 {
+            color: #d32f2f; /* Red */
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styles */
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Label */
+        label {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1976d2; /* Blue */
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* Select Dropdown */
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #1976d2;
+            border-radius: 5px;
+            background: #f4f4f4;
+            color: #333;
+            outline: none;
+        }
+
+        /* Submit Button */
+        button {
+            background: #d32f2f; /* Red */
+            color: white;
+            padding: 12px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: #b71c1c; /* Darker red */
+            transform: scale(1.05);
+        }
+
+        /* Back Link */
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            font-size: 16px;
+            color: #1976d2; /* Blue */
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        a:hover {
+            color: #0d47a1; /* Darker blue */
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 80%;
+            }
+        }
+    </style>
+
+    <div class="container">
+        <h1>Modifier Status pour Consultation</h1>
+
+        <form method="POST">
+            <label for="status">Status</label>
+            <select name="status" id="status">
+                <option value="En cours de traitement" {% if consultation.status == 'En cours de traitement' %}selected{% endif %}>En cours de traitement</option>
+                <option value="Confirmed" {% if consultation.status == 'Confirmed' %}selected{% endif %}>Confirmed</option>
+                <option value="Done" {% if consultation.status == 'Done' %}selected{% endif %}>Done</option>
+            </select>
+
+            <button type="submit">Enregistrer</button>
+        </form>
+
+        <a href="{{ path('app_consultations_list') }}">Retour a  Consultation List</a>
+    </div>
+{% endblock %}
