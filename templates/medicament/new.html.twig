@@ -1,0 +1,91 @@
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Catégories de Médicaments{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="text-center">Choisissez une catégorie</h2>
+
+    <div class="row">
+        {% for categorie in categories %}
+            <div class="col-md-4 mb-4">
+                <a href="{{ path('app_medicament_par_categorie', {'slug': categorie.slug}) }}" class="text-decoration-none">
+                    <div class="card text-center p-3 shadow-sm category-card">
+                        <img src="{{ asset('images/icons/' ~ categorie.icone) }}" alt="{{ categorie.nom }}" class="img-fluid" width="80">
+                        <h5 class="mt-2">{{ categorie.nom }}</h5>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        /* Body background */
+        body {
+            background-color:rgb(43, 93, 142);
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Search Input */
+        .input-group .form-control {
+            border: 2px solid #007bff;
+            transition: 0.3s;
+        }
+
+        .input-group .form-control:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+        }
+
+        .input-group-text {
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Category Cards */
+        .category-card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            background:rgb(17, 81, 209);
+            border-radius: 120px;
+        }
+
+        .category-card:hover {
+            transform: scale(1.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Centering category images */
+        .category-card img {
+            width: 200px; /* Taille plus grande */
+            height: auto;
+            transition: transform 0.3s ease-in-out;
+            display: block;
+            margin: auto;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+            gap: 100px; /* Espacement entre les éléments */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .img {
+            width: 200px; /* Agrandir les images */
+            height: auto;
+            border-radius: 10px; /* Coins arrondis */
+        }
+    </style>
+{% endblock %}
+

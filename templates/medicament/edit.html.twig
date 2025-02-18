@@ -1,0 +1,233 @@
+<div class="header-container">
+    <img src="/images/logo.png" alt="Team Logo" class="team-logo">
+    <div class="header-title">Médicaments</div>
+</div>
+
+<div class="form-container">
+    <div class="form-title">Modifier un médicament</div>
+
+    <form method="post" action="{{ path('app_medicament_edit', {'id': medicament.id}) }}" enctype="multipart/form-data">
+        {{ form_start(form) }}
+
+        <!-- Name Field -->
+        <div class="form-group">
+            {{ form_label(form.nom_medicament, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.nom_medicament, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.nom_medicament) }}
+            </div>
+        </div>
+
+        <!-- Description Field -->
+        <div class="form-group">
+            {{ form_label(form.description_medicament, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description_medicament, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.description_medicament) }}
+            </div>
+        </div>
+
+        <!-- Type Field -->
+        <div class="form-group">
+            {{ form_label(form.type_medicament, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.type_medicament, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.type_medicament) }}
+            </div>
+        </div>
+
+        <!-- Price Field -->
+        <div class="form-group">
+            {{ form_label(form.prix_medicament, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.prix_medicament, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.prix_medicament) }}
+            </div>
+        </div>
+
+        <!-- Quantity Field -->
+        <div class="form-group">
+            {{ form_label(form.quantite_stock, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.quantite_stock, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.quantite_stock) }}
+            </div>
+        </div>
+
+        <!-- Date entrée Field -->
+        <div class="form-group">
+            {{ form_label(form.date_entree, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date_entree, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.date_entree) }}
+            </div>
+        </div>
+
+        <!-- Date expiration Field -->
+        <div class="form-group">
+            {{ form_label(form.date_expiration, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.date_expiration, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.date_expiration) }}
+            </div>
+        </div>
+
+        <!-- Image Field -->
+        <div class="form-group">
+            {{ form_label(form.image_medicament, null, {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.image_medicament, {'attr': {'class': 'form-control'}}) }}
+            <div class="form-error">
+                {{ form_errors(form.image_medicament) }}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="button-container">
+            <button type="submit">Enregistrer les modifications</button>
+        </div>
+
+        {{ form_end(form) }}
+    </form>
+    
+
+    
+</div>
+
+<style>
+    body {
+        background-image: url('/images/medical-service.jpg'); 
+        background-size: cover; 
+        background-position: center; 
+        background-repeat: no-repeat; 
+        margin: 0;
+        padding: 0;
+        height: 100vh; 
+        display: flex;
+        justify-content: flex-start; 
+        align-items: center; 
+        flex-direction: column; 
+        padding-left: 20px;
+    }
+
+    .header-container {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .team-logo {
+        width: 80px; 
+        height: auto;
+        margin-right: 10px;
+    }
+
+    .header-title {
+        font-family: 'Poppins', sans-serif;
+        font-size: 28px;
+        font-weight: bold;
+        color: white;
+    }
+
+    .form-container {
+        width: 100%;
+        max-width: 400px;
+        padding: 15px;
+        background-color: rgba(70, 130, 180, 0.8);
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-title {
+        font-size: 22px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+        color: white;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-label {
+        font-size: 16px;
+        font-weight: 700;
+        color: white;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .form-control:focus {
+        border-color: #0056b3;
+        outline: none;
+    }
+
+    .button-container {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    button[type="submit"] {
+        padding: 6px 12px;
+        background-color: #e74c3c;
+        color: white;
+        font-size: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #c0392b;
+    }
+
+    .delete-button {
+        padding: 6px 12px;
+        background-color: #ff4444;
+        color: white;
+        font-size: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .delete-button:hover {
+        background-color: #cc0000;
+    }
+
+    .form-error {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    @media (max-width: 600px) {
+        .form-container {
+            width: 90%;
+            padding: 10px;
+        }
+
+        .form-title {
+            font-size: 20px;
+        }
+
+        .form-control {
+            font-size: 13px;
+        }
+
+        button[type="submit"], .delete-button {
+            font-size: 10px;
+        }
+    }
+</style>
+
