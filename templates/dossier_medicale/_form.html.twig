@@ -1,4 +1,8 @@
-{{ form_start(form, {'attr': {'class': 'form-container animate-fade-up'}}) }}
+{% block javascripts %}
+    <script src="{{ asset('js/form-validation.js') }}"></script>
+{% endblock %}
+
+{{ form_start(form, {'attr': {'class': 'form-container animate-fade-up', 'novalidate': 'novalidate'}}) }}
     <div class="form-header">
         <div class="header-icon">
             <i class="material-icons">folder_shared</i>
@@ -7,7 +11,7 @@
             <h4 class="header-title">{{ button_label is defined ? 'Modifier le dossier médical' : 'Nouveau dossier médical' }}</h4>
             <p class="header-subtitle">Veuillez remplir les informations du dossier médical</p>
         </div>
-                    </div>
+    </div>
 
     <div class="form-body">
         <div class="form-grid">
@@ -21,12 +25,13 @@
                     </div>
                     <div class="section-content">
                         <div class="input-group">
-                            <div class="input-field with-icon">
+                            <div class="input-field with-icon required-field">
                                 <i class="material-icons prefix">person</i>
                                 {{ form_widget(form.patient, {
                                     'attr': {
                                         'class': 'select-custom',
-                                        'placeholder': 'Sélectionner un patient'
+                                        'required': 'required',
+                                        'data-error': 'Veuillez sélectionner un patient'
                                     }
                                 }) }}
                                 {{ form_label(form.patient, null, {'label_attr': {'class': 'active'}}) }}
@@ -34,7 +39,7 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
 
                 <!-- Medical Staff Section -->
                 <div class="form-section">
@@ -44,20 +49,21 @@
                     </div>
                     <div class="section-content">
                         <div class="input-group">
-                            <div class="input-field with-icon">
+                            <div class="input-field with-icon required-field">
                                 <i class="material-icons prefix">medical_services</i>
                                 {{ form_widget(form.medecin, {
                                     'attr': {
                                         'class': 'select-custom',
-                                        'placeholder': 'Sélectionner un médecin'
+                                        'required': 'required',
+                                        'data-error': 'Veuillez sélectionner un médecin'
                                     }
                                 }) }}
                                 {{ form_label(form.medecin, null, {'label_attr': {'class': 'active'}}) }}
                                 {{ form_errors(form.medecin, {'attr': {'class': 'error-message'}}) }}
                             </div>
                         </div>
+                    </div>
                 </div>
-            </div>
 
                 <!-- File Status Section -->
                 <div class="form-section">
@@ -67,24 +73,26 @@
                     </div>
                     <div class="section-content">
                         <div class="input-group">
-                            <div class="input-field with-icon">
+                            <div class="input-field with-icon required-field">
                                 <i class="material-icons prefix">event</i>
                                 {{ form_widget(form.dateDeCreation, {
                                     'attr': {
                                         'class': 'datepicker-custom',
-                                        'placeholder': 'JJ/MM/AAAA'
+                                        'required': 'required',
+                                        'data-error': 'La date de création est requise'
                                     }
                                 }) }}
                                 {{ form_label(form.dateDeCreation, null, {'label_attr': {'class': 'active'}}) }}
                                 {{ form_errors(form.dateDeCreation, {'attr': {'class': 'error-message'}}) }}
-                    </div>
+                            </div>
 
-                            <div class="input-field with-icon">
+                            <div class="input-field with-icon required-field">
                                 <i class="material-icons prefix">assignment</i>
                                 {{ form_widget(form.statutDossier, {
                                     'attr': {
                                         'class': 'select-custom',
-                                        'placeholder': 'Sélectionner un statut'
+                                        'required': 'required',
+                                        'data-error': 'Le statut du dossier est requis'
                                     }
                                 }) }}
                                 {{ form_label(form.statutDossier, null, {'label_attr': {'class': 'active'}}) }}
@@ -92,7 +100,7 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+                </div>
 
                 <!-- Documents Section -->
                 <div class="form-section">
@@ -101,14 +109,18 @@
                         <h5>Documents</h5>
                     </div>
                     <div class="section-content">
-                    <div class="file-field input-field">
-                        <div class="btn primary waves-effect">
+                        <div class="file-field input-field">
+                            <div class="btn primary waves-effect">
                                 <span><i class="material-icons left">cloud_upload</i>Choisir</span>
-                            {{ form_widget(form.imageFile) }}
-                        </div>
-                        <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" placeholder="Télécharger une image">
-                        </div>
+                                {{ form_widget(form.imageFile, {
+                                    'attr': {
+                                        'accept': 'image/*'
+                                    }
+                                }) }}
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text" placeholder="Télécharger une image">
+                            </div>
                             {{ form_errors(form.imageFile, {'attr': {'class': 'error-message'}}) }}
                         </div>
                     </div>
@@ -129,11 +141,13 @@
                                 {{ form_widget(form.historiqueDesMaladies, {
                                     'attr': {
                                         'class': 'materialize-textarea custom-textarea',
-                                        'placeholder': 'Décrivez l\'historique des maladies'
+                                        'minlength': '10',
+                                        'data-error': 'L\'historique doit contenir au moins 10 caractères'
                                     }
                                 }) }}
                                 {{ form_label(form.historiqueDesMaladies, null, {'label_attr': {'class': 'active'}}) }}
                                 {{ form_errors(form.historiqueDesMaladies, {'attr': {'class': 'error-message'}}) }}
+                                <span class="field-hint">Minimum 10 caractères</span>
                             </div>
 
                             <div class="input-field with-icon">
@@ -141,11 +155,12 @@
                                 {{ form_widget(form.operationsPassees, {
                                     'attr': {
                                         'class': 'materialize-textarea custom-textarea',
-                                        'placeholder': 'Listez les opérations passées'
+                                        'minlength': '5'
                                     }
                                 }) }}
                                 {{ form_label(form.operationsPassees, null, {'label_attr': {'class': 'active'}}) }}
                                 {{ form_errors(form.operationsPassees, {'attr': {'class': 'error-message'}}) }}
+                                <span class="field-hint">Minimum 5 caractères</span>
                             </div>
 
                             <div class="input-field with-icon">
@@ -153,11 +168,12 @@
                                 {{ form_widget(form.consultationsPassees, {
                                     'attr': {
                                         'class': 'materialize-textarea custom-textarea',
-                                        'placeholder': 'Listez les consultations passées'
+                                        'minlength': '5'
                                     }
                                 }) }}
                                 {{ form_label(form.consultationsPassees, null, {'label_attr': {'class': 'active'}}) }}
                                 {{ form_errors(form.consultationsPassees, {'attr': {'class': 'error-message'}}) }}
+                                <span class="field-hint">Minimum 5 caractères</span>
                             </div>
 
                             <div class="input-field with-icon">
@@ -165,11 +181,12 @@
                                 {{ form_widget(form.notes, {
                                     'attr': {
                                         'class': 'materialize-textarea custom-textarea',
-                                        'placeholder': 'Notes additionnelles'
+                                        'minlength': '5'
                                     }
                                 }) }}
                                 {{ form_label(form.notes, null, {'label_attr': {'class': 'active'}}) }}
                                 {{ form_errors(form.notes, {'attr': {'class': 'error-message'}}) }}
+                                <span class="field-hint">Minimum 5 caractères</span>
                             </div>
                         </div>
                     </div>
@@ -184,10 +201,10 @@
                 <i class="material-icons left">arrow_back</i>
                 Retour
             </a>
-        <button class="btn primary waves-effect waves-light" type="submit">
-            <i class="material-icons left">save</i>
-            {{ button_label|default('Enregistrer') }}
-        </button>
+            <button class="btn primary waves-effect waves-light" type="submit">
+                <i class="material-icons left">save</i>
+                {{ button_label|default('Enregistrer') }}
+            </button>
         </div>
     </div>
 {{ form_end(form) }}

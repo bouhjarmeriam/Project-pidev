@@ -1,4 +1,13 @@
-{{ form_start(form, {'attr': {'class': 'form-container animate-fade-up'}}) }}
+{% block javascripts %}
+    <script src="{{ asset('js/form-validation.js') }}"></script>
+{% endblock %}
+
+{{ form_start(form, {
+    'attr': {
+        'class': 'form-container animate-fade-up',
+        'novalidate': 'novalidate'
+    }
+}) }}
     <div class="form-header">
         <div class="header-icon">
             <i class="material-icons">hotel</i>
@@ -16,11 +25,12 @@
                 <h5>Dossier Médical</h5>
             </div>
             <div class="section-content">
-                <div class="input-field">
+                <div class="input-field required-field">
                     {{ form_widget(form.dossierMedicale, {
                         'attr': {
                             'class': 'select-custom',
-                            'placeholder': 'Sélectionner un dossier médical'
+                            'required': 'required',
+                            'data-error': 'Veuillez sélectionner un dossier médical'
                         }
                     }) }}
                     {{ form_label(form.dossierMedicale, null, {'label_attr': {'class': 'active'}}) }}
@@ -36,22 +46,24 @@
             </div>
             <div class="section-content">
                 <div class="date-range-group">
-                    <div class="input-field">
+                    <div class="input-field required-field">
                         {{ form_widget(form.dateEntree, {
                             'attr': {
                                 'class': 'datepicker-custom',
-                                'placeholder': 'JJ/MM/AAAA'
+                                'required': 'required',
+                                'data-error': 'La date d\'entrée est requise'
                             }
                         }) }}
                         {{ form_label(form.dateEntree, 'Date d\'entrée', {'label_attr': {'class': 'active'}}) }}
                         {{ form_errors(form.dateEntree, {'attr': {'class': 'error-message'}}) }}
                     </div>
 
-                    <div class="input-field">
+                    <div class="input-field required-field">
                         {{ form_widget(form.dateSortie, {
                             'attr': {
                                 'class': 'datepicker-custom',
-                                'placeholder': 'JJ/MM/AAAA'
+                                'required': 'required',
+                                'data-error': 'La date de sortie est requise'
                             }
                         }) }}
                         {{ form_label(form.dateSortie, 'Date de sortie', {'label_attr': {'class': 'active'}}) }}
@@ -59,11 +71,12 @@
                     </div>
                 </div>
 
-                <div class="input-field">
+                <div class="input-field required-field">
                     {{ form_widget(form.typeSejour, {
                         'attr': {
                             'class': 'select-custom',
-                            'placeholder': 'Sélectionner le type de séjour'
+                            'required': 'required',
+                            'data-error': 'Veuillez sélectionner le type de séjour'
                         }
                     }) }}
                     {{ form_label(form.typeSejour, null, {'label_attr': {'class': 'active'}}) }}
@@ -79,13 +92,15 @@
             </div>
             <div class="section-content">
                 <div class="price-group">
-                    <div class="input-field">
+                    <div class="input-field required-field">
                         {{ form_widget(form.fraisSejour, {
                             'attr': {
                                 'class': 'input-custom price-input',
-                                'placeholder': '0.00',
+                                'required': 'required',
+                                'type': 'number',
                                 'step': '0.01',
-                                'min': '0'
+                                'min': '0',
+                                'data-error': 'Les frais de séjour sont requis et doivent être positifs'
                             }
                         }) }}
                         {{ form_label(form.fraisSejour, null, {'label_attr': {'class': 'active'}}) }}
@@ -97,9 +112,10 @@
                         {{ form_widget(form.prixExtras, {
                             'attr': {
                                 'class': 'input-custom price-input',
-                                'placeholder': '0.00',
+                                'type': 'number',
                                 'step': '0.01',
-                                'min': '0'
+                                'min': '0',
+                                'data-error': 'Le prix des extras doit être positif'
                             }
                         }) }}
                         {{ form_label(form.prixExtras, null, {'label_attr': {'class': 'active'}}) }}
@@ -109,22 +125,24 @@
                 </div>
 
                 <div class="payment-status-group">
-                    <div class="input-field">
+                    <div class="input-field required-field">
                         {{ form_widget(form.moyenPaiement, {
                             'attr': {
                                 'class': 'select-custom',
-                                'placeholder': 'Sélectionner le moyen de paiement'
+                                'required': 'required',
+                                'data-error': 'Veuillez sélectionner le moyen de paiement'
                             }
                         }) }}
                         {{ form_label(form.moyenPaiement, null, {'label_attr': {'class': 'active'}}) }}
                         {{ form_errors(form.moyenPaiement, {'attr': {'class': 'error-message'}}) }}
                     </div>
 
-                    <div class="input-field">
+                    <div class="input-field required-field">
                         {{ form_widget(form.statutPaiement, {
                             'attr': {
                                 'class': 'select-custom',
-                                'placeholder': 'Sélectionner le statut'
+                                'required': 'required',
+                                'data-error': 'Veuillez sélectionner le statut du paiement'
                             }
                         }) }}
                         {{ form_label(form.statutPaiement, null, {'label_attr': {'class': 'active'}}) }}
@@ -416,4 +434,19 @@
     .form-section:hover .section-header {
         background-color: #f1f5f9;
     }
-</style> 
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form[data-form-type="sejour"]');
+    
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            if (validateForm(this, 'sejour')) {
+                this.submit();
+            }
+        });
+    }
+});
+</script>

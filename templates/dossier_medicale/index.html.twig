@@ -66,8 +66,18 @@
                                     </td>
                                     <td>{{ dossier_medicale.dateDeCreation ? dossier_medicale.dateDeCreation|date('d/m/Y') : '' }}</td>
                                     <td>
-                                        <span class="status-badge {{ dossier_medicale.statutDossier == 'Actif' ? 'status-success' : 'status-warning' }}">
-                                            <i class="material-icons tiny">
+                                        <span class="status-badge {{ dossier_medicale.statutDossier == 'Actif' ? 'status-success' : 'status-warning' }}" 
+                                              style="background-color: {{ dossier_medicale.statutDossier == 'Actif' ? '#E8F5E9' : '#FFEBEE' }}; 
+                                                     padding: 8px 12px; 
+                                                     border-radius: 6px;
+                                                     color: {{ dossier_medicale.statutDossier == 'Actif' ? '#2E7D32' : '#C62828' }};
+                                                     font-weight: 600;
+                                                     display: inline-flex;
+                                                     align-items: center;
+                                                     gap: 6px;
+                                                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                                                     border: 1px solid {{ dossier_medicale.statutDossier == 'Actif' ? '#A5D6A7' : '#FFCDD2' }};">
+                                            <i class="material-icons tiny" style="color: {{ dossier_medicale.statutDossier == 'Actif' ? '#2E7D32' : '#C62828' }}">
                                                 {% if dossier_medicale.statutDossier == 'Actif' %}check_circle
                                                 {% else %}warning{% endif %}
                                             </i>

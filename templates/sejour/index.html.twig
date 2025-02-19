@@ -62,8 +62,26 @@
                                     <td>{{ sejour.dateEntree ? sejour.dateEntree|date('d/m/Y') : '' }}</td>
                                     <td>{{ sejour.dateSortie ? sejour.dateSortie|date('d/m/Y') : '' }}</td>
                                     <td>
-                                        <span class="status-badge {{ sejour.typeSejour == 'Hospitalisation' ? 'status-warning' : 'status-info' }}">
-                                            <i class="material-icons tiny">
+                                        <span class="status-badge {{ sejour.typeSejour == 'Hospitalisation' ? 'status-warning' : 'status-info' }}"
+                                              style="background-color: {% if sejour.typeSejour == 'Hospitalisation' %}#FFF3E0
+                                                                     {% elseif sejour.typeSejour == 'Consultation' %}#E1F5FE
+                                                                     {% else %}#F3E5F5{% endif %}; 
+                                                     padding: 8px 12px; 
+                                                     border-radius: 6px;
+                                                     color: {% if sejour.typeSejour == 'Hospitalisation' %}#E65100
+                                                            {% elseif sejour.typeSejour == 'Consultation' %}#0277BD
+                                                            {% else %}#7B1FA2{% endif %};
+                                                     font-weight: 600;
+                                                     display: inline-flex;
+                                                     align-items: center;
+                                                     gap: 6px;
+                                                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                                                     border: 1px solid {% if sejour.typeSejour == 'Hospitalisation' %}#FFE0B2
+                                                                      {% elseif sejour.typeSejour == 'Consultation' %}#B3E5FC
+                                                                      {% else %}#E1BEE7{% endif %};">
+                                            <i class="material-icons tiny" style="color: {% if sejour.typeSejour == 'Hospitalisation' %}#E65100
+                                                                                      {% elseif sejour.typeSejour == 'Consultation' %}#0277BD
+                                                                                      {% else %}#7B1FA2{% endif %}">
                                                 {% if sejour.typeSejour == 'Hospitalisation' %}local_hotel
                                                 {% elseif sejour.typeSejour == 'Consultation' %}medical_services
                                                 {% else %}emergency{% endif %}
