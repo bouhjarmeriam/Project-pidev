@@ -24,6 +24,10 @@ class Entretien
     #[ORM\Column(length: 200)]
     private ?string $nom_equipement = null;
 
+    #[ORM\ManyToOne(inversedBy: 'Entretien')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Equipement $equipement = null;
+
     // Getter pour la propriété 'nom_equipement'
     public function getNomEquipement(): ?string
     {
@@ -64,6 +68,18 @@ class Entretien
     public function setNomEquipement(string $nom_equipement): static
     {
         $this->nom_equipement = $nom_equipement;
+
+        return $this;
+    }
+
+    public function getEquipement(): ?Equipement
+    {
+        return $this->equipement;
+    }
+
+    public function setEquipement(?Equipement $equipement): static
+    {
+        $this->equipement = $equipement;
 
         return $this;
     }
