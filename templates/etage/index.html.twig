@@ -1,0 +1,126 @@
+{% extends '/departement/base.html.twig' %}
+
+{% block styles %}
+<style>
+    .custom-table {
+        margin: 0 auto;
+        width: 80%;
+    }
+    .image-thumbnail {
+        width: 30px !important;
+        height: 30px !important;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="d-flex justify-content-center">
+    <div class="container mt-5 text-center">
+        <h1 class="text-center mb-4 text-primary">
+            <i class="fas fa-list"></i> Liste des Étages
+        </h1>
+
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success text-center">
+                <i class="fas fa-check-circle"></i> {{ message }}
+            </div>
+        {% endfor %}
+
+        {% if etages is empty %}
+            <div class="alert alert-warning text-center">
+                <i class="fas fa-exclamation-triangle"></i> Aucun étage trouvé.
+            </div>
+        {% else %}
+            <div class="d-flex justify-content-center mb-4">
+                <a href="{{ path('etage_new') }}" class="btn btn-success me-3">
+                    <i class="fas fa-plus-circle"></i> Ajouter un Étage
+                </a>
+                <div class="input-group w-50 shadow-sm">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un étage...">
+                </div>
+            </div>
+
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered custom-table">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Numéro</th>
+                                    <th>Nombre de Salles</th>
+                                    <th>Département</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="etagesList">
+                                {% for etage in etages %}
+                                    <tr class="etage-row">
+                                        <td>{{ etage.Numero }}</td>
+                                        <td>{{ etage.NbrSalle }}</td>
+                                        <td>{{ etage.departement ? etage.departement.nom : 'Aucun' }}</td>
+                                        <td>
+                                            <a href="{{ path('etage_edit', {'id': etage.id}) }}" class="btn btn-warning btn-sm">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeletion('{{ path('etage_delete', {'id': etage.id}) }}', '{{ csrf_token('delete' ~ etage.id) }}')">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Script de recherche -->
+<script>
+    document.getElementById("searchInput").addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = document.querySelectorAll(".etage-row");
+
+        rows.forEach(row => {
+            let text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "table-row" : "none";
+        });
+    });
+
+    function confirmDeletion(deleteUrl, csrfToken) {
+        Swal.fire({
+            title: 'Êtes-vous sûr ?',
+            text: 'Vous ne pourrez pas revenir en arrière !',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Oui, supprimer !',
+            cancelButtonText: 'Annuler',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = deleteUrl;
+
+                const csrfField = document.createElement('input');
+                csrfField.type = 'hidden';
+                csrfField.name = '_token';
+                csrfField.value = csrfToken;
+                form.appendChild(csrfField);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        });
+    }
+</script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.21/dist/sweetalert2.all.min.js"></script>
+
+{% endblock %}
