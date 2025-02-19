@@ -22,7 +22,14 @@ class DepartementController extends AbstractController
             'departements' => $departementRepository->findAll(),
         ]);
     }
-
+    #[Route('/front/departements', name: 'departement_front_index', methods: ['GET'])]
+    public function frontIndex(DepartementRepository $departementRepository): Response
+    {
+        return $this->render('departement/front_index.html.twig', [
+            'departements' => $departementRepository->findAll(),
+        ]);
+    }
+    
     #[Route('/add', name: 'departement_add', methods: ['GET', 'POST'])]
     public function newDepartement(Request $request, EntityManagerInterface $entityManager): Response
     {

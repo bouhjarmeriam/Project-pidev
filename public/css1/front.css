@@ -1,0 +1,40 @@
+.container {
+    max-width: 1200px;
+}
+
+.card {
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: 12px;
+    overflow: hidden;
+    border: none;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+.logo-img {
+    height: 10px;  /* Ajustez selon besoin */
+    width: auto;   /* Garde les proportions */
+}
+

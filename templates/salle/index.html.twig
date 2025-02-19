@@ -3,15 +3,15 @@
 {% block styles %}
 <style>
     /* Centrer le tableau */
-    custom-table {
-        margin: 50px auto; /* Marge autour du tableau pour espacer */
-        width: 120%; /* Augmente la largeur du tableau à 120% de son parent */
+    .custom-table {
+        margin: 0 auto; /* Centre le tableau horizontalement */
+        width: 80%; /* Définit la largeur du tableau à 80% de son parent */
     }
      .image-thumbnail {
-        width: 50px !important;  /* Taille réduite */
-        height: 50px !important;
+        width: 30px !important;  /* Taille réduite */
+        height: 30px !important;
         object-fit: cover;
-        border-radius: 20%;
+        border-radius: 50%;
     }
 </style>
 {% endblock %}
@@ -20,7 +20,7 @@
 <div class="d-flex justify-content-center">
     <div class="container mt-5 text-center">
         <h1 class="text-center mb-4 text-primary">
-            <i class="fas fa-list"></i> Liste des Départements
+            <i class="fas fa-list"></i> Liste des Salles
         </h1>
 
         {% for message in app.flashes('success') %}
@@ -29,18 +29,18 @@
             </div>
         {% endfor %}
 
-        {% if departements is empty %}
+        {% if salles is empty %}
             <div class="alert alert-warning text-center">
-                <i class="fas fa-exclamation-triangle"></i> Aucun département trouvé.
+                <i class="fas fa-exclamation-triangle"></i> Aucune salle trouvée.
             </div>
         {% else %}
             <div class="d-flex justify-content-center mb-4">
-                <a href="{{ path('departement_add') }}" class="btn btn-success me-3">
-                    <i class="fas fa-plus-circle"></i> Ajouter un Département
+                <a href="{{ path('salle_add') }}" class="btn btn-success me-3">
+                    <i class="fas fa-plus-circle"></i> Ajouter une Salle
                 </a>
                 <div class="input-group w-50 shadow-sm">
                     <span class="input-group-text"><i class="fas fa-search"></i></span>
-                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un département...">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Rechercher une salle...">
                 </div>
             </div>
 
@@ -51,30 +51,32 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>Nom</th>
-                                    <th>Adresse</th>
-                                    <th>Nombre d'Étages</th>
-                                    <th>Image</th> <!-- Ajout d'une colonne pour l'image -->
+                                    <th>Capacité</th>
+                                    <th>Type</th>
+                                    <th>Étage</th>
+                                    <th>Image</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="departementsList">
-                                {% for departement in departements %}
-                                    <tr class="departement-row">
-                                        <td>{{ departement.Nom }}</td>
-                                        <td>{{ departement.Adresse }}</td>
-                                        <td>{{ departement.nbreetage }}</td>
+                            <tbody id="sallesList">
+                                {% for salle in salles %}
+                                    <tr class="salle-row">
+                                        <td>{{ salle.nom }}</td>
+                                        <td>{{ salle.capacite }}</td>
+                                        <td>{{ salle.typeSalle }}</td>
+                                        <td>{{ salle.etage ? salle.etage.id : 'Non défini' }}</td>
                                         <td>
-                                            {% if departement.image %}
-                                                <img src="{{ asset(departement.image) }}" alt="Image" class="image-thumbnail" />
+                                            {% if salle.image %}
+                                                <img src="{{ asset(salle.image) }}" alt="Image" class="image-thumbnail" />
                                             {% else %}
                                                 <span>Aucune image</span>
                                             {% endif %}
                                         </td>
                                         <td>
-                                            <a href="{{ path('departement_edit', {'id': departement.id}) }}" class="btn btn-warning btn-sm">
+                                            <a href="{{ path('salle_edit', {'id': salle.id}) }}" class="btn btn-warning btn-sm">
                                                 <i class="fas fa-edit"></i>
                                             </a>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeletion('{{ path('departement_delete', {'id': departement.id}) }}', '{{ csrf_token('delete' ~ departement.id) }}')">
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="confirmDeletion('{{ path('salle_delete', {'id': salle.id}) }}', '{{ csrf_token('delete' ~ salle.id) }}')">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </td>
@@ -93,7 +95,7 @@
 <script>
     document.getElementById("searchInput").addEventListener("keyup", function () {
         let filter = this.value.toLowerCase();
-        let rows = document.querySelectorAll(".departement-row");
+        let rows = document.querySelectorAll(".salle-row");
 
         rows.forEach(row => {
             let text = row.textContent.toLowerCase();

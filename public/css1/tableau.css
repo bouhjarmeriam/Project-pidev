@@ -1,0 +1,140 @@
+/* Centrage de la page */
+.d-flex.justify-content-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Style du conteneur principal */
+.container {
+    max-width: 100%;
+    padding: 20px;
+}
+
+/* Titre principal */
+h1.text-primary {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Alertes */
+.alert {
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+}
+
+/* Boutons */
+.btn {
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Barre de recherche */
+.input-group {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.input-group-text {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: 0.3s;
+}
+
+.form-control:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Table */
+.custom-table {
+    margin: 0 auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table {
+    width: 300%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.thead-dark {
+    background-color: #343a40;
+    color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f8f9fa;
+}
+
+.table-bordered th, 
+.table-bordered td {
+    border: 1px solid #dee2e6;
+    padding: 12px;
+    text-align: center;
+}
+
+/* Icônes */
+.fas {
+    margin-right: 5px;
+}
+
+/* Style des images */
+.image-thumbnail {
+    width: 30px !important;
+    height: 30px !important;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Carte contenant la table */
+.card {
+    max-width: 500%;
+    width: 300%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Effet hover sur les lignes */
+.etage-row:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    transition: background-color 0.3s;
+}

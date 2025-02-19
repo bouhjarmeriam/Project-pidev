@@ -1,0 +1,29 @@
+{% extends '/departement/base1.html.twig' %}
+
+{% block title %}Nos Départements{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('css1/front.css') }}">
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Découvrez Nos Départements</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for departement in departements %}
+            <div class="col">
+                <div class="card shadow-sm border-0 rounded-lg h-100">
+                    <!-- Affichage de l'image -->
+                    <img src="{{ asset(departement.image) }}" class="card-img-top" alt="{{ departement.nom }}" style="height: 200px; object-fit: cover;">
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary fw-bold">{{ departement.nom }}</h5>
+                        <p class="card-text text-muted"><i class="fa fa-map-marker-alt"></i> {{ departement.adresse }}</p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Aucun département disponible pour le moment.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

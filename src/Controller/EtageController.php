@@ -36,7 +36,7 @@ class EtageController extends AbstractController
             return $this->redirectToRoute('etage_index');
         }
 
-        return $this->render('etage/new.html.twig', [
+        return $this->render('etage/add.html.twig', [
             'etage' => $etage,
             'form' => $form->createView(),
         ]);
