@@ -1,0 +1,18 @@
+{# templates/entretien/create.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un entretien{% endblock %}
+
+{% block body %}
+    <h1>Créer un entretien</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.date) }}
+        {{ form_row(form.descreption) }}
+        {{ form_row(form.nom_equipement) }}
+
+        <button class="btn btn-primary">Créer</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('entretien_list') }}">Retour à la liste</a>
+{% endblock %}
