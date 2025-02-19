@@ -24,19 +24,24 @@ class Entretien
     #[ORM\Column(length: 200)]
     private ?string $nom_equipement = null;
 
-    // Getter pour 'id'
+    // Getter pour la propriété 'nom_equipement'
+    public function getNomEquipement(): ?string
+    {
+        return $this->nom_equipement;
+    }
+
+    // Autres getters et setters...
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    // Getter pour 'date'
     public function getDate(): ?\DateTimeInterface
     {
         return $this->date;
     }
 
-    // Setter pour 'date'
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
@@ -44,13 +49,11 @@ class Entretien
         return $this;
     }
 
-    // Getter pour 'descreption'
     public function getDescreption(): ?string
     {
         return $this->descreption;
     }
 
-    // Setter pour 'descreption'
     public function setDescreption(string $descreption): static
     {
         $this->descreption = $descreption;
@@ -58,13 +61,6 @@ class Entretien
         return $this;
     }
 
-    // Getter pour 'nom_equipement'
-    public function getNomEquipement(): ?string
-    {
-        return $this->nom_equipement;
-    }
-
-    // Setter pour 'nom_equipement'
     public function setNomEquipement(string $nom_equipement): static
     {
         $this->nom_equipement = $nom_equipement;
@@ -72,3 +68,4 @@ class Entretien
         return $this;
     }
 }
+
