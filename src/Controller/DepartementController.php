@@ -29,6 +29,14 @@ class DepartementController extends AbstractController
             'departements' => $departementRepository->findAll(),
         ]);
     }
+    #[Route('/departement/{id}', name: 'departement_show', methods: ['GET'])]
+public function show(Departement $departement): Response
+{
+    return $this->render('departement/show.html.twig', [
+        'departement' => $departement,
+    ]);
+}
+
     
     #[Route('/add', name: 'departement_add', methods: ['GET', 'POST'])]
     public function newDepartement(Request $request, EntityManagerInterface $entityManager): Response

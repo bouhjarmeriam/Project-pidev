@@ -6,6 +6,7 @@ use App\Repository\EtageRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: EtageRepository::class)]
 class Etage
@@ -16,12 +17,17 @@ class Etage
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le numéro de l'étage est obligatoire.")]
+    #[Assert\Positive(message: "Le numéro de l'étage doit être un nombre positif.")]
     private ?int $Numero = null;
 
     #[ORM\Column]
+    #[Assert\NotBlank(message: "Le nombre de salles est obligatoire.")]
+    #[Assert\Positive(message: "Le nombre de salles doit être un nombre positif.")]
     private ?int $NbrSalle = null;
 
     #[ORM\ManyToOne(inversedBy: 'etages')]
+    #[Assert\NotNull(message: "L'étage doit être rattaché à un département.")]
     private ?Departement $departement = null;
 
     /**
