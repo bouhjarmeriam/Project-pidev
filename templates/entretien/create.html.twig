@@ -1,4 +1,3 @@
-{# templates/entretien/create.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Créer un entretien{% endblock %}
@@ -7,11 +6,30 @@
     <h1>Créer un entretien</h1>
 
     {{ form_start(form) }}
-        {{ form_row(form.date) }}
-        {{ form_row(form.descreption) }}
-        {{ form_row(form.nom_equipement) }}
+        
+        <!-- Affichage du champ de la date avec erreurs -->
+        <div class="form-group">
+            {{ form_label(form.date) }}
+            {{ form_widget(form.date) }}
+            {{ form_errors(form.date) }}  <!-- Affiche les erreurs pour ce champ -->
+        </div>
+
+        <!-- Affichage du champ de la description avec erreurs -->
+        <div class="form-group">
+            {{ form_label(form.descreption) }}
+            {{ form_widget(form.descreption) }}
+            {{ form_errors(form.descreption) }}  <!-- Affiche les erreurs pour ce champ -->
+        </div>
+
+        <!-- Affichage du champ du nom de l'équipement avec erreurs -->
+        <div class="form-group">
+            {{ form_label(form.nom_equipement) }}
+            {{ form_widget(form.nom_equipement) }}
+            {{ form_errors(form.nom_equipement) }}  <!-- Affiche les erreurs pour ce champ -->
+        </div>
 
         <button class="btn btn-primary">Créer</button>
+
     {{ form_end(form) }}
 
     <a href="{{ path('entretien_list') }}">Retour à la liste</a>

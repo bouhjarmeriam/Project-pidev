@@ -4,6 +4,7 @@
 namespace App\Controller;
 
 use App\Entity\Entretien;
+use App\Entity\Equipement;
 use App\Form\EntretienType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\EntretienRepository;
@@ -14,10 +15,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EntretienController extends AbstractController
 {
-    #[Route('/entretien/create', name: 'create_entretien')]
-    public function create(Request $request, EntityManagerInterface $entityManager): Response
+    private $entityManager;
+
+    // Injection de la dépendance Doctrine dans le constructeur
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route('/entretien/create/{equipement_id}', name: 'create_entretien')]
+    public function create(Request $request, EntityManagerInterface $entityManager, int $equipement_id): Response
+    {
+        $equipement = $this->entityManager->getRepository(Equipement::class)->find($equipement_id);
+
+        if (!$equipement) {
+            throw $this->createNotFoundException('Équipement non trouvé.');
+        }
+
         $entretien = new Entretien();
+        $entretien->setEquipement($equipement);
+        $entretien->setNomEquipement($equipement->getNom());
 
         $form = $this->createForm(EntretienType::class, $entretien);
 
@@ -91,4 +108,3 @@ class EntretienController extends AbstractController
         return $this->redirectToRoute('entretien_list');
     }
 }
-

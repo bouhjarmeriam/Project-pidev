@@ -19,6 +19,15 @@ class Entretien
     private ?\DateTimeInterface $date = null;
 
     #[ORM\Column(length: 200)]
+    /**
+     * @Assert\NotBlank(message="La description est obligatoire.")
+     * @Assert\Length(
+     *      min=10,
+     *      max=255,
+     *      minMessage="La description doit comporter au moins {{ limit }} caractères.",
+     *      maxMessage="La description ne peut pas dépasser {{ limit }} caractères."
+     * )
+     */
     private ?string $descreption = null;
 
     #[ORM\Column(length: 200)]

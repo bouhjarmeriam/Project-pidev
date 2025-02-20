@@ -53,10 +53,11 @@
                        onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet équipement ?')">Supprimer</a>
 
                     <!-- Bouton Entretien -->
-                    <a href="{{ path('entretien_equipement', {'id': equipement.id}) }}" 
-                       class="btn btn-info btn-sm float-end ms-2">
-                        Entretien
+                    <a href="{{ path('create_entretien', {'equipement_id': equipement.id}) }}" 
+                         class="btn btn-info btn-sm">
+                         Ajouter un entretien
                     </a>
+
                 </li>
             {% else %}
                 <li class="list-group-item">Aucun équipement trouvé dans cette catégorie.</li>
@@ -66,3 +67,4 @@
 
 </body>
 </html>
+
