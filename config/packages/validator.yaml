@@ -9,5 +9,5 @@ framework:
 
 when@test:
     framework:
-        validation:
-            not_compromised_password: false
+        validation: { enable_annotations: true }
+            
